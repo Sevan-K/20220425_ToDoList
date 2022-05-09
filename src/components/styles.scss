@@ -32,6 +32,7 @@
     transition: 0.2s all;
     &:hover {
       background-color: #388ae2;
+      animation: vibrate 200ms ease-in-out 3 alternate none;
     }
     &:active {
       transform: scale(0.8);
@@ -39,7 +40,6 @@
     }
   }
 }
-
 
 // todo style
 .container {
@@ -106,10 +106,23 @@
   outline: none;
 }
 
+@keyframes vibrate {
+  from {
+    transform: translateX(-5px);
+  }
+  to {
+    transform: translateX(0px);
+  }
+}
+
 .icon {
   margin-left: 10px;
   font-size: 25px;
   cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    color: #c52a0e;
+  }
 }
 
 @media (max-width: 1100px) {

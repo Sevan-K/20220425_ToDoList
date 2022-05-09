@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ToDo } from "../model";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { MdDone } from "react-icons/md";
@@ -13,6 +13,14 @@ interface Props {
 
 // function component
 const SingleToDo = ({ toDoObject, toDos, setToDos }: Props) => {
+  // local state to know if the single todo is being edited
+  const [editStatus, setEditStatus] = useState<boolean>(false);
+  // local state to store the value of the todo
+  const [editToDo, setEditToDo] = useState<string>(toDoObject.toDo);
+
+  // function to edit a todo
+  const handleEdit = (id: Number) => {};
+
   // function to handle done action
   const handleDone = (id: Number) => {
     // my solution to modifie is done using map
