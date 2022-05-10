@@ -19,10 +19,13 @@ const SingleToDo = ({ toDoObject, toDos, setToDos }: Props) => {
   const [editToDo, setEditToDo] = useState<string>(toDoObject.toDo);
 
   // function to edit a todo
-  const handleEdit = (id: Number) => {};
+  const handleEdit = () => {
+    // change edit status only, if it is not being edited and if it is not done
+    if (!editStatus && !toDoObject.isDone) setEditStatus(!editStatus);
+  };
 
   // function to handle done action
-  const handleDone = (id: Number) => {
+  const handleDone: (id: number) => void = (id: Number) => {
     // my solution to modifie is done using map
     let modifiedToDos: ToDo[] = toDos.map((toDo) =>
       // return the same isDone unless id match the targeted one
@@ -32,21 +35,46 @@ const SingleToDo = ({ toDoObject, toDos, setToDos }: Props) => {
   };
 
   // function to handle delete a single todo
-  const handleDelete = (id: Number) => {
+  const handleDelete: (id: number) => void = function (id: number) {
     setToDos(toDos.filter((toDo) => toDo.id !== id));
   };
 
+  // function to handle form submit
+  const handleSubmit = (event: React.FormEvent, id: number) => {
+    event.preventDefault();
+    setEditStatus(!editStatus);
+    // todo text is replaced
+    setToDos(
+      toDos.map((toDo) =>
+        toDo.id === id ? { ...toDo, toDo: editToDo } : { ...toDo }
+      )
+    );
+  };
+
   return (
-    <form className="todos__single">
+    <form
+      className="todos__single"
+      onSubmit={(event) => handleSubmit(event, toDoObject.id)}
+    >
       {/* todo text part either span when not done or s (for strike) when done */}
-      {toDoObject.isDone ? (
+      {editStatus ? (
+        <input
+          type="text"
+          name="editToDo"
+          id="editToDo"
+          value={editToDo}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setEditToDo(event.target.value)
+          }
+        />
+      ) : toDoObject.isDone ? (
         <s className="todos__single--text">{toDoObject.toDo}</s>
       ) : (
         <span className="todos__single--text">{toDoObject.toDo}</span>
       )}
       {/* div for the three icons */}
       <div>
-        <span className="icon">
+        <span className="icon" onClick={handleEdit}>
           <AiFillEdit />
         </span>
         <span className="icon" onClick={() => handleDelete(toDoObject.id)}>
